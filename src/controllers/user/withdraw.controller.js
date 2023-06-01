@@ -1,6 +1,7 @@
 const User = require("../../models/user.model");
 const Account = require("../../models/account.model");
 const jwt = require("jsonwebtoken");
+const getDateAndTime = require("../../utils/getDateAndTime");
 
 const token_secret = process.env.TOKEN_KEY;
 
@@ -21,10 +22,12 @@ let withdrawFunction = async (req, res) => {
       { _id: decode._id },
       { password: 0, role: 0, token: 0 }
     );
-    if (user.balance < ammount) {
+    if (Number(user.balance) < ammount) {
       return res.status(400).send({ message: "Insufficient Funds" });
     }
-    let bal = user.balance - ammount;
+    let bal = Number(user.balance) - ammount;
+    bal = bal.toString();
+    ammount = ammount.toString();
 
     let dpst = await Account.create({
       userId: user._id,

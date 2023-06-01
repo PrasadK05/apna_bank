@@ -1,6 +1,5 @@
 const Account = require("../../models/account.model");
 const jwt = require("jsonwebtoken");
-const getDateAndTime = require("../../utils/getDateAndTime");
 
 const token_secret = process.env.TOKEN_KEY;
 
@@ -16,7 +15,14 @@ let transactionsFunction = async (req, res) => {
     try {
       let transact1 = await Account.find({
         userId: decode._id,
-        $or: [{ type: regex }, { note: regex }],
+        $or: [
+          { type: regex },
+          { note: regex },
+          { time: regex },
+          { date: regex },
+          { balance: regex },
+          { ammount: regex },
+        ],
       });
 
       return res.status(200).send({ transactions: transact1 });
@@ -37,14 +43,3 @@ let transactionsFunction = async (req, res) => {
 };
 
 module.exports = transactionsFunction;
-
-// find({
-//   userId: decode._id,
-//   // createdAt: regex,
-//   // balance: regex,
-//   // note: regex,
-//   // ammount: regex,
-//   // type: regex,
-// }).sort({
-//   createdAt: -1,
-// });

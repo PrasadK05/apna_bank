@@ -22,7 +22,9 @@ let depositFunction = async (req, res) => {
       { _id: decode._id },
       { password: 0, role: 0, token: 0 }
     );
-    let bal = user.balance + ammount;
+    let bal = Number(user.balance) + ammount;
+    bal = bal.toString();
+    ammount = ammount.toString();
 
     let dpst = await Account.create({
       userId: user._id,
@@ -30,8 +32,8 @@ let depositFunction = async (req, res) => {
       balance: bal,
       ammount,
       note,
-      date:data.date,
-      time:data.time
+      date: data.date,
+      time: data.time,
     });
     let update = await User.updateOne({ _id: user._id }, { balance: bal });
     return res.status(200).send({ message: "Money deposited successfully" });

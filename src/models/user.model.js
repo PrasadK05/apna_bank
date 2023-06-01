@@ -6,7 +6,7 @@ const users = new mongoose.Schema({
   password: { type: String, required: true },
   role: { type: String, enum: ["banker", "customer"], default: "customer" },
   mobileNumber: { type: String, required: true },
-  balance: { type: Number, default: 0 },
+  balance: { type: String, default: "0" },
   token: { type: String, default: null },
 });
 
